@@ -16,10 +16,10 @@ for the user to choose their desired action.
     public static void main(String[] args) {
         spiderLeg leg;
         int option = 0;     //to hold the user option
-        HashMap<String, Integer> searchedKeyWord = new HashMap<String, Integer>(); //this is to hold each keyword with number of their repitition
-        Quicksort quicksort; //creating a quick sort object
-        BST binarySearchTree;   //creating a binary search tree object
-        binarySearchTree = new BST();   //initializing the BST
+//        HashMap<String, Integer> searchedKeyWord = new HashMap<String, Integer>(); //this is to hold each keyword with number of their repitition
+//        Quicksort quicksort; //creating a quick sort object
+        RBT redBlackTree;   //creating a binary search tree object
+        redBlackTree = new RBT();   //initializing the BST
         List<String> list = new ArrayList<>(); //creating a list to hold the initial list of urls
         Scanner scanner = new Scanner(System.in);
         List<urlObjects> arrUrl = new ArrayList<>();    //list of URL objects
@@ -35,14 +35,12 @@ for the user to choose their desired action.
 
             System.out.println("1) Search for a keyword");
             System.out.println("2) Print the urls:");
-            System.out.println("3) sorting urls base on their total score using QuickSort: ");
-            System.out.println("4) Create a BST and print it using inorderWalk :");
-            System.out.println("5) Search for url base on it's totalScore:");
-            System.out.println("6) Insert a url with it's totalScore:");
-            System.out.println("7) Delete a url base on it's totalScore:");
-            System.out.println("8) Print the keyword being most searched:");
-            System.out.println("9) Print the urls for the most used keyword sorted using bucketSort:");
-            System.out.println("10) Quit" + "\n\n");
+            System.out.println("3) Create a BST");
+            System.out.println("4) Search for url base on it's totalScore:");
+            System.out.println("5) Insert a url with it's totalScore:");
+            System.out.println("6) Delete a url base on it's totalScore:");
+            System.out.println("7) Print the sorted list:");
+            System.out.println("8) Quit" + "\n\n");
             System.out.println("Please choose a number from list above:");
             option = scanner.nextInt();
             if (option == 1) {
@@ -50,14 +48,8 @@ for the user to choose their desired action.
                 System.out.print("Please enter a keyword");
                 String keyword = scanner.next();
                 //adding keyword to the hash map to keep track of the user entry
-                if (searchedKeyWord.containsKey(keyword)) {
-                    int temp = searchedKeyWord.get(keyword);
-                    searchedKeyWord.put(keyword, ++temp);
-                } else {
-                    searchedKeyWord.put(keyword, 1);
-                }
 
-                binarySearchTree = new BST();   //re initializing the tree for every new entry
+                redBlackTree = new RBT();   //re initializing the tree for every new entry
                 leg = new spiderLeg();          //spider leg to get the number of links in each link
                 arrUrl = new ArrayList<>();     // re initializing the arr url to get the new set of urls
 
@@ -92,83 +84,54 @@ for the user to choose their desired action.
                 }
             }
             if (option == 2) {
-                System.out.println("\n" + "This is the list of urls before calling quicksort :" + "\n\n");
+                System.out.println("\n" + "This is the list of urls before building RBT :" + "\n\n");
                 for (int i = 0; i < arrUrl.size(); i++) {
                     System.out.println(i + 1 + ")" + "index: " + arrUrl.get(i).index + ";" + " Total score :" + arrUrl.get(i).totalScore + ";" + " url : " + arrUrl.get(i).url );
                 }
+
             } else if (option == 3) {
-                System.out.println("This is the list of urls after calling quicksort :" + "\n");
-                quicksort = new Quicksort();
-                quicksort.QuickSort(arrUrl, 0, arrUrl.size() - 1);
-                for (int i = 0; i < arrUrl.size(); i++) {
-                    arrUrl.get(i).pageRank = (arrUrl.size() - i);
-                    System.out.println(i + 1 + ")" + "index: " + arrUrl.get(i).index + ";" + " Total score :" + arrUrl.get(i).totalScore + ";" + " PageRank: " + arrUrl.get(i).pageRank + ";" + " url : " + arrUrl.get(i).url );
-                }
-            } else if (option == 4) {
 
 
-                System.out.println("This is the binary search tree sorted after calling inorderWalk base on PageRank:" + "\n");
+                System.out.println("Red Black Tree is build" + "\n");
                 Node node = null;
 
                 for (int i = 0; i < arrUrl.size(); i++) {
 
                     node = new Node(arrUrl.get(i));
-                    binarySearchTree.treeInsert(node);
+                    redBlackTree.treeInsert(node);
 
                 }
-                binarySearchTree.index = arrUrl.size();
-                binarySearchTree.inorderTreeWalk(binarySearchTree.getRoot());
+                redBlackTree.index = arrUrl.size();
 
 
-            } else if (option == 5) {
+
+            } else if (option == 4) {
                 System.out.println("Enter a totalScore to look for url :");
                 int searchedValue = scanner.nextInt();
-                Node searchedNode = binarySearchTree.treeSearch(binarySearchTree.getRoot(), searchedValue);
-                System.out.println( " Total score :"+ searchedNode.obj.totalScore+ " has following property :" + "\n" + "index: " + searchedNode.obj.index + ";" +" Page Rank : "+ searchedNode.obj.pageRank + " url : " + searchedNode.obj.url   + "\n");
-            } else if (option == 6) {
+                Node searchedNode = redBlackTree.treeSearch(redBlackTree.getRoot(), searchedValue);
+                System.out.println( " Total score :"+ searchedNode.obj.totalScore+ " has following property :" + "\n" + "index: " + searchedNode.obj.index + ";" +" Page Rank : "+ searchedNode.obj.pageRank + " Color : " + searchedNode.color + " url : " + searchedNode.obj.url   + "\n");
+            } else if (option == 5) {
                 System.out.println("Enter a url with it total score to insert in the tree");
                 String userUrl = scanner.next();
                 int userTotalScore = scanner.nextInt();
 
                 urlObjects insertNode = new urlObjects(userTotalScore, userUrl, arrUrl.size(), 0);
                 Node newNode = new Node(insertNode);
-                binarySearchTree.treeInsert(newNode);
-                binarySearchTree.index = arrUrl.size();
-                binarySearchTree.inorderTreeWalk(binarySearchTree.getRoot());
-            } else if (option == 7) {
-                System.out.println("Enter a Page Rank you would like to delete from tree");
+                redBlackTree.treeInsert(newNode);
+                redBlackTree.index = arrUrl.size();
+                redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
+            } else if (option == 6) {
+                System.out.println("Enter a total score you would like to delete from tree");
                 int deletedPageRank = scanner.nextInt();
-                Node deletedNode = binarySearchTree.treeSearch(binarySearchTree.getRoot(), deletedPageRank);
-                binarySearchTree.treeDelete(deletedNode);
-                binarySearchTree.index = arrUrl.size();
-                binarySearchTree.inorderTreeWalk(binarySearchTree.getRoot());
+                Node deletedNode = redBlackTree.treeSearch(redBlackTree.getRoot(), deletedPageRank);
+                redBlackTree.treeDelete(deletedNode);
+                redBlackTree.index = arrUrl.size();
+                redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
 
-            } else if (option == 8) {
-                key = "";
-                int max = 0;
-                for (String k : searchedKeyWord.keySet()) {
-                    if (searchedKeyWord.get(k) > max) {
-                        max = searchedKeyWord.get(k);
-                        key = k;
-                    }
-                }
-                System.out.println("This is most repeated keyword in our search: " + key);
+            } else if (option == 7) {
+                redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
 
-            } else if (option == 9) {
-
-                list = crawl.getDataFromGoogle(key);
-                List<urlObjects> arrListOfUrl = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
-                    arrListOfUrl.add(new urlObjects(0, list.get(i), 0, 0));
-                }
-                BucketSort bs = new BucketSort();
-                bs.bucketSort(arrListOfUrl);
-                System.out.println("This is list of urls alphabetically ordered for most used keyword: ");
-                for (int i = 0; i < arrListOfUrl.size(); i++) {
-                    System.out.println(" url : " + arrListOfUrl.get(i).url);
-                }
             }
-
         }
 
     }
