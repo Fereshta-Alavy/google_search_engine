@@ -1,5 +1,5 @@
 /*
-    This class is implementing the binary search tree with its
+    This class is implementing the red black tree with its
     functions.
  */
 public class RBT {
@@ -28,7 +28,7 @@ public class RBT {
 
     }
 
-    //    //This function will return the minimum of the tree
+    //This function will return the minimum of the tree
     public Node treeMinimum(Node x) {
         while (x.left != null) {
             x = x.left;
@@ -58,17 +58,18 @@ public class RBT {
         rbInsertFixUp(z);
     }
 
+    //this function is a helper function that help to fix the redblack tree
     public void rbInsertFixUp(Node z){
-        while (z.color == state.RED && z.parent != null){
-            if (z.parent == z.parent.parent.left){
+        while (z.parent != null && z.parent.color == state.RED){
+            if (z.parent.parent.left != null && z.parent == z.parent.parent.left) {
                 Node y = z.parent.parent.right;
-                if (y.color == state.RED){
+                if (y != null && y.color == state.RED) {
                     z.parent.color = state.BLACK;
                     y.color = state.BLACK;
                     z.parent.parent.color = state.RED;
                     z = z.parent.parent;
-                }
-                else if(z == z.parent.right){
+                } else{
+                    if (z == z.parent.right) {
                     z = z.parent;
                     leftRotate(z);
                 }
@@ -76,26 +77,28 @@ public class RBT {
                 z.parent.parent.color = state.RED;
                 rightRotate(z.parent.parent);
             }
+            }
             else{
                 Node y = z.parent.parent.left;
-                if (y.color == state.RED){
+                if (y != null && y.color == state.RED){
                     z.parent.color = state.BLACK;
                     y.color = state.BLACK;
                     z.parent.parent.color = state.RED;
                     z = z.parent.parent;
                 }
-                else if(z == z.parent.left){
+                else {
+                    if(z == z.parent.left){
                     z = z.parent;
                     rightRotate(z);
-                }
+                    }
                 z.parent.color = state.BLACK;
                 z.parent.parent.color = state.RED;
-                leftRotate(z.parent.parent);
+                leftRotate(z.parent.parent);}
             }
         }
         this.root.color = state.BLACK;
     }
-
+    //rotating the node
     public void leftRotate(Node x){
         Node y = x.right;
         x.right = y.left;
@@ -111,7 +114,7 @@ public class RBT {
         y.left = x;
         x.parent = y;
     }
-
+    //rotating the node
     public void rightRotate(Node x){
         Node y = x.left;
         x.left = y.right;
@@ -129,17 +132,18 @@ public class RBT {
     }
 
 
-    //    //This function will do the in order walk of the tree and print the elements
+    //This function will do the in order walk of the tree and print the elements
     public void inorderTreeWalk(Node x){
         if (x != null){
             inorderTreeWalk(x.left);
-            x.obj.pageRank = index--;
+            if (index > 0)
+                x.obj.pageRank = index--;
             System.out.println( "index: " + x.obj.index + ";" + " Total score :" + x.obj.totalScore + ";" + " PageRank: " + x.obj.pageRank + ";"+" Color: " + x.color + " url : " + x.obj.url );
             inorderTreeWalk(x.right);
         }
     }
 
-    //    //This function will delete a node from tree
+    //This function will delete a node from tree
     public void treeDelete(Node z){
         Node y = z;
         Node x;
@@ -160,7 +164,7 @@ public class RBT {
             yOriginalColor = y.color;
             x = y.right;
             // finding z's successor
-            if (y.parent == z){
+            if (y.parent == z && x != null){
                 x.parent = y;
             }
             else{
@@ -174,66 +178,71 @@ public class RBT {
             y.left.parent = y ;
             y.color = z.color;
         }
-        if (yOriginalColor == state.BLACK)
+        if (yOriginalColor == state.BLACK && x != null)
             treeDeleteFixup(x);
     }
 
+    //this is a helper function for fixing the tree after delete
     public void treeDeleteFixup(Node x){
-        while (x != this.root && x.color == state.BLACK){
-            if (x == x.parent.left){
+        while (x != this.root && x.color == state.BLACK) {
+            if (x == x.parent.left) {
                 Node w = x.parent.right;
-                if (w.color == state.RED){
+                if (w.color == state.RED) {
                     w.color = state.BLACK;
                     x.parent.color = state.RED;
                     leftRotate(x.parent);
                     w = x.parent.right;
-                }
-                if (w.left.color == state.BLACK && w.right.color == state.BLACK){
-                    w.color = state.RED;
-                    x = x.parent;
-                }
-                else if (w.right.color == state.BLACK){
-                    w.left.color = state.BLACK;
-                    w.color = state.RED;
-                    rightRotate(w);
-                    w = x.parent.right;
+                } else {
+                    if (w.left.color == state.BLACK && w.right.color == state.BLACK) {
+                        w.color = state.RED;
+                        x = x.parent;
+                    } else
+                    {if (w.right.color == state.BLACK) {
+                        w.left.color = state.BLACK;
+                        w.color = state.RED;
+                        rightRotate(w);
+                        w = x.parent.right;
 
+                    }
+                    w.color = x.parent.color;
+                    x.parent.color = state.BLACK;
+                    w.right.color = state.BLACK;
+                    leftRotate(x.parent);
+                    x = this.root;}
                 }
-                w.color = x.parent.color;
-                x.parent.color = state.BLACK;
-                w.right.color = state.BLACK;
-                leftRotate(x.parent);
-                x = this.root;
-            }
-            else{
+            } else {
                 Node w = x.parent.left;
-                if (w.color == state.RED){
+                if (w.color == state.RED) {
                     w.color = state.BLACK;
                     x.parent.color = state.RED;
                     rightRotate(x.parent);
                     w = x.parent.left;
                 }
-                if (w.left.color == state.BLACK && w.right.color == state.BLACK){
+                else{
+                if (w.left.color == state.BLACK && w.right.color == state.BLACK) {
                     w.color = state.RED;
                     x = x.parent;
-                }
-                else if (w.left.color == state.BLACK){
-                    w.right.color = state.BLACK;
-                    w.color = state.RED;
-                    leftRotate(w);
-                    w = x.parent.left;
+                } else {
+                    if (w.left.color == state.BLACK) {
+                        w.right.color = state.BLACK;
+                        w.color = state.RED;
+                        leftRotate(w);
+                        w = x.parent.left;
 
+                    }
+                    w.color = x.parent.color;
+                    x.parent.color = state.BLACK;
+                    w.left.color = state.BLACK;
+                    rightRotate(x.parent);
+                    x = this.root;
                 }
-                w.color = x.parent.color;
-                x.parent.color = state.BLACK;
-                w.left.color = state.BLACK;
-                rightRotate(x.parent);
-                x = this.root;
             }
+        }
         }
         x.color = state.BLACK;
     }
 
+    //transplant is called from delete node function
     public void rbTransplant (Node u , Node v){
         // Handle u is root of T
         if (u.parent == null)
@@ -245,7 +254,8 @@ public class RBT {
         else
             u.parent.right = v;
         //update v.p if v is non-NIL
-        v.parent = u.parent;
+        if (v != null)
+            v.parent = u.parent;
     }
 }
 

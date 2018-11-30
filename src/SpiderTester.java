@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.runtime.ECMAException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,7 +8,7 @@ import java.util.Scanner;
 public class SpiderTester {
 /*
 this is the test class that will run and control the flow of the program.
-This class has an object of crawler, BST, quickSort and bucketsort. It also has a menu
+This class has an object of crawler, red black tree, quickSort and bucketsort. It also has a menu
 for the user to choose their desired action.
  */
 
@@ -16,33 +18,30 @@ for the user to choose their desired action.
     public static void main(String[] args) {
         spiderLeg leg;
         int option = 0;     //to hold the user option
-//        HashMap<String, Integer> searchedKeyWord = new HashMap<String, Integer>(); //this is to hold each keyword with number of their repitition
-//        Quicksort quicksort; //creating a quick sort object
         RBT redBlackTree;   //creating a binary search tree object
         redBlackTree = new RBT();   //initializing the BST
         List<String> list = new ArrayList<>(); //creating a list to hold the initial list of urls
         Scanner scanner = new Scanner(System.in);
         List<urlObjects> arrUrl = new ArrayList<>();    //list of URL objects
-        String key = "";
         Spider spider = new Spider();
 
         FunnyCrawler crawl = new FunnyCrawler();    //this the instantiation of the new crawler
 
         //This will be a forever while loop to get the option from the user
         //option 10 is to quit the program
-        while (option != 10) {
+        while (option != 7) {
 
 
             System.out.println("1) Search for a keyword");
             System.out.println("2) Print the urls:");
-            System.out.println("3) Create a BST");
+            System.out.println("3) Create a RedBlack Tree");
             System.out.println("4) Search for url base on it's totalScore:");
             System.out.println("5) Insert a url with it's totalScore:");
             System.out.println("6) Delete a url base on it's totalScore:");
-            System.out.println("7) Print the sorted list:");
-            System.out.println("8) Quit" + "\n\n");
+            System.out.println("7) Quit" + "\n\n");
             System.out.println("Please choose a number from list above:");
             option = scanner.nextInt();
+            int additional = 0;
             if (option == 1) {
 
                 System.out.print("Please enter a keyword");
@@ -69,7 +68,6 @@ for the user to choose their desired action.
                     int temp = leg.getLinksOnPage(l);
                     numOfLinks.add(temp);
                     System.out.print(".");
-//                    System.out.println(l);
                     if (temp > max)
                         max = temp;
                 }
@@ -102,6 +100,7 @@ for the user to choose their desired action.
 
                 }
                 redBlackTree.index = arrUrl.size();
+                redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
 
 
 
@@ -109,8 +108,9 @@ for the user to choose their desired action.
                 System.out.println("Enter a totalScore to look for url :");
                 int searchedValue = scanner.nextInt();
                 Node searchedNode = redBlackTree.treeSearch(redBlackTree.getRoot(), searchedValue);
-                System.out.println( " Total score :"+ searchedNode.obj.totalScore+ " has following property :" + "\n" + "index: " + searchedNode.obj.index + ";" +" Page Rank : "+ searchedNode.obj.pageRank + " Color : " + searchedNode.color + " url : " + searchedNode.obj.url   + "\n");
+                System.out.println( " Total score :"+ searchedNode.obj.totalScore+ " has following property :" + "\n" + "index: " + searchedNode.obj.index + " Total score: " + searchedNode.obj.totalScore +" Page Rank : "+ searchedNode.obj.pageRank + " Color : " + searchedNode.color + " url : " + searchedNode.obj.url   + "\n");
             } else if (option == 5) {
+                additional++;
                 System.out.println("Enter a url with it total score to insert in the tree");
                 String userUrl = scanner.next();
                 int userTotalScore = scanner.nextInt();
@@ -118,17 +118,19 @@ for the user to choose their desired action.
                 urlObjects insertNode = new urlObjects(userTotalScore, userUrl, arrUrl.size(), 0);
                 Node newNode = new Node(insertNode);
                 redBlackTree.treeInsert(newNode);
-                redBlackTree.index = arrUrl.size();
+                redBlackTree.index = arrUrl.size()+additional;
                 redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
             } else if (option == 6) {
                 System.out.println("Enter a total score you would like to delete from tree");
+                additional--;
                 int deletedPageRank = scanner.nextInt();
                 Node deletedNode = redBlackTree.treeSearch(redBlackTree.getRoot(), deletedPageRank);
-                redBlackTree.treeDelete(deletedNode);
-                redBlackTree.index = arrUrl.size();
-                redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
-
-            } else if (option == 7) {
+                try{
+                    redBlackTree.treeDelete(deletedNode);
+                }catch (Exception e){
+                    System.out.println("please try again!\n");
+                }
+                redBlackTree.index = arrUrl.size()+additional;
                 redBlackTree.inorderTreeWalk(redBlackTree.getRoot());
 
             }

@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="PA2-Fereshta_Alavy:jar">
+  <artifact type="jar" name="PA2-Fereshta_Alavy:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/PA2_Fereshta_Alavy_jar</output-path>
     <root id="archive" name="PA2-Fereshta_Alavy.jar">
       <element id="module-output" name="PA2-Fereshta_Alavy" />

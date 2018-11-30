@@ -19,9 +19,9 @@ public class Node {
         this.keyTotalScore= url.totalScore;
         this.keyPageRank= url.pageRank;
         this.color = state.BLACK;
-        left = null;
-        right = null;
-        parent = null;
+        this.left = null;
+        this.right = null;
+        this.parent = null;
     }
 
 
