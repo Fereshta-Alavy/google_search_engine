@@ -1,26 +1,27 @@
-## google_search_engine
+# Google Search Engine Simulator
+> The Google Search Engine stimulator is a small search engine, which can search and
+print web pages that is related to the keyword that user enter.
 
-The Google Search Engine stimulator is a small search engine, which can search and
-print web pages that is related to the keyword that user enter. In this project I
-implemented different data structures to manipulate all the URLs and give a desired
-output for the user. All the URLs have a total score that shows how important is the URL.
-Base on that total score I was able to sort the URLs from least important to the most
-important URL using Quick sort. I also wanted to give ability to the user so
-they can search, add or delete a URL from the list; therefore, I decided to use BST data
-structure to let user manipulate the data. I implemented bucket sort for sorting all the
-URL's related to the keyword, which is being searched the most, base on their first letter
-of the URL. I used following classes to implement this project:
+## Table of contents
+* [General info](#general-info)
+* [Screenshots](#screenshots)
+* [Technologies](#technologies)
+* [Description_of_classes](#description_of_classes)
+* [Status](#status)
+* [Contact](#contact)
 
-* FunnyCrawler.Java (was given)
-* spiderLeg.Java (was given)
-* urlObject.java
-* BST.java
-* Node.java
-* BucketSort.java
-* SpiderTester.java
-* QuickSort.java
+## General info
+In this project I implemented different data structures to manipulate all the URLs and give a desired
+output for the user. All the URLs have a total score that shows how important is the URL. Base on that total score I was able to sort the URLs from least important to the most important URL using Quick sort data structure. I also wanted to give ability to the user so they can search, add or delete a URL from the list; therefore, I decided to use BST data structure to let user manipulate the data. I implemented bucket sort for sorting all the URL's related to the keyword, which is being searched the most, base on their first letter of the URL.
+## Screenshots
+![Example screenshot](./img/screenshot.png)
 
-# SpiderTester class: 
+## Technologies
+* Java 
+* Web Crawler
+
+## Description_of_classes
+SpiderTester class: 
 This is main class that test all of the methods and classes
 and provide a runnable code. The purpose of this class is that to put all of
 the code from other classes together and create a search engine. There is
@@ -30,12 +31,12 @@ can search for one keyword or multiple keyword in a session and can get
 the most popular keyword. All the data structures used in this programming
 assignment were tested in this class.
 
-# Quicksort class: 
+Quicksort class: 
 The Purpose of this class is to take the list of my urls and sort them base
 on their total score and print a descending sorted list. It has a helper function which is
 partition and a function that is called initially.
 
-# urlObject class:
+urlObject class:
 For this programming assignment we are asked to make
 a Google Search Engine Simulator that prints 30 urls base on the keyword
 and each url has to have Index, totalScore, Page Rank and URL. So to do
@@ -45,22 +46,29 @@ different values. The three methods, setUrl(), setTotalScore(), and
 setPageRank() will set the url name and corresponding totalScore and
 pageRank for each urlObject that we need.
 
-# BST class: 
+BST class: 
 A binary search tree or BST is a popular data structure which is
 used to keep elements in order. The key for implementation this class is to
 reduce the time complexity for the operations such as search, insert and
 delete a node from the tree and still keep the bst properties. All the
 operation for the BST can be perform in O(log(n))time.
 
-# Node class:
+Node class:
 Each element in the binary search tree have left, right, parent, key. I
 implement this class to have a node object so I can use it in my BST class to have access
 to each part of the specific node. This class also has the fields obj type urlObject and
 keyTotalScore and keyPageRank of type int to have access to the instances for the
 comparison in the bst.
 
-# BucketSort class : 
+BucketSort class : 
 In this class I implement the bucket sort to put each url base on the first
 letter of their url into a bucket in alphabetical order. I used a separate list of lists with
 capacity of 27 to have a space for every character and that will act as buckets and
 added every url based on the alphabet to it.
+
+## Status
+Project is: _finished_
+
+## Contact
+Created by [@fereshtaAlavy](https://www.linkedin.com/in/fereshta-alavy/) - feel free to contact me!
+
