@@ -14,7 +14,7 @@ print web pages that is related to the keyword that user enter.
 In this project I implemented different data structures to manipulate all the URLs and give a desired
 output for the user. All the URLs have a total score that shows how important is the URL. Base on that total score I was able to sort the URLs from least important to the most important URL using Quick sort data structure. I also wanted to give ability to the user so they can search, add or delete a URL from the list; therefore, I decided to use BST data structure to let user manipulate the data. I implemented bucket sort for sorting all the URL's related to the keyword, which is being searched the most, base on their first letter of the URL.
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](./screenshot.jpg)
 
 ## Technologies
 * Java 
