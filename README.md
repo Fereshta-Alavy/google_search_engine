@@ -11,8 +11,8 @@ structure to let user manipulate the data. I implemented bucket sort for sorting
 URL's related to the keyword, which is being searched the most, base on their first letter
 of the URL. I used following classes to implement this project:
 
-1.FunnyCrawler.Java (was given)
-2.spiderLeg.Java (was given)
+-FunnyCrawler.Java (was given)
+-spiderLeg.Java (was given)
 3. urlObject.java
 4. BST.java
 5. Node.java
